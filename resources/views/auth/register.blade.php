@@ -84,7 +84,7 @@
                         </div>
                         <div class="form-check text-left">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox">
+                                <input class="form-check-input" type="checkbox" required>
                                 <span class="form-check-sign"></span>
                                 {{ __('I agree to the') }}
                                 <a href="#">{{ __('terms and conditions') }}</a>.

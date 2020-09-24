@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\LoginController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,3 +29,7 @@ Route::get('/login', function () {
 Route::get('/forgot-password', function () {
     return view('auth/register');
 })->name('password.request');
+
+Route::post('/register', [RegisterController::class, 'register']);
+
+Route::post('/login', [LoginController::class, 'login']);
