@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,6 +29,20 @@ Route::get('/forgot-password', function () {
     return view('auth/register');
 })->name('password.request');
 
-Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/register', [UserController::class, 'register']);
 
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [UserController::class, 'login']);
+
+Route::get('/profile', function () {
+    return view('profile');
+})->name('profile')->middleware('auth');
+
+Route::get('/profile-edit', function () {
+    return view('profile');
+})->name('profile.edit')->middleware('auth');
+
+Route::get('/employee', function () {
+    return view('employee/index');
+})->name('employee.index')->middleware('auth');
+
+Route::post('/logout', [UserController::class, 'logOut'])->name('logout')->middleware('auth');
