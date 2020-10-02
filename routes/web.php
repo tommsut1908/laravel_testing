@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\EmployeeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Models\Employee;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,8 +44,6 @@ Route::get('/profile-edit', function () {
     return view('profile');
 })->name('profile.edit')->middleware('auth');
 
-Route::get('/employee', function () {
-    return view('employee/index');
-})->name('employee.index')->middleware('auth');
-
+Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index')->middleware('auth');
+Route::get('/employee/json',[EmployeeController::class, 'json'])->name('employee.json')->middleware('auth');;
 Route::post('/logout', [UserController::class, 'logOut'])->name('logout')->middleware('auth');
