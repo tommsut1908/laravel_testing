@@ -25,6 +25,10 @@
                                 <i class="tim-icons icon-single-02"></i>
                                 <p>{{ __('Employee List') }}</p>
                             </a>
+                            <a href="{{ route('employee/create')  }}">
+                                <i class="tim-icons icon-single-02"></i>
+                                <p>{{ __('Create Employee') }}</p>
+                            </a>
                         </li>
                     </ul>
                 </div>

@@ -44,7 +44,7 @@
             "processing": true,  // Show processing 
             "serverSide": true,  // Server side processing
             "ajax": {
-                "url": "/employee/json",
+                "url": "/employee/getEmployeeDT",
                 "type": "GET",
                 "error": function(data){
                     console.log(data);

@@ -44,6 +44,13 @@ Route::get('/profile-edit', function () {
     return view('profile');
 })->name('profile.edit')->middleware('auth');
 
-Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index')->middleware('auth');
-Route::get('/employee/json',[EmployeeController::class, 'json'])->name('employee.json')->middleware('auth');;
 Route::post('/logout', [UserController::class, 'logOut'])->name('logout')->middleware('auth');
+
+Route::get('/employee', [EmployeeController::class, 'index'])->name('employee.index')->middleware('auth');
+
+Route::get('/employee/getEmployeeDT',[EmployeeController::class, 'getEmployeeDT'])->name('employee.getEmployeeDT')->middleware('auth');
+
+Route::get('/employee/create', function () {
+    return view('employee/create');
+})->name('employee/create')->middleware('auth');
+Route::post('/employee/create', [EmployeeController::class, 'createEmployee'])->middleware('auth');

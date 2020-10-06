@@ -9,7 +9,7 @@ use DataTables;
 
 class EmployeeController extends Controller
 {
-    public function json() {
+    public function getEmployeeDT() {
         return  DataTables::of(Employee::all())->make(true);
     }
     
@@ -17,86 +17,47 @@ class EmployeeController extends Controller
         return view('employee/index');
     }
 
+    public function setEmployeeID() {
+        $getLastId = Employee::orderBy('employee_id', 'desc')->first()->employee_id;
+
+        if(!$getLastId) {
+            $id = "EMP001";
+        }else {
+            $toIncrement = substr($getLastId, -3);
+            $increment =  (float)$toIncrement + 1;
+            $id = "EMP".sprintf("%03d", $increment);
+        }
+
+        return $id;
+    }
+    public function createEmployee(Request $request) { 
+        $input = $request->input();
+        $id = $this->setEmployeeID();
+        $firstname = $input['firstname'];
+        $lastname = $input['lastname'];
+        $dob = $input['dob'];
+        $gender = $input['gender'];
+        $joiningDate = date("Y-m-d h:i:s ");
+        $isActive = true;
 
 
+        try {
+            $employee = new Employee();
+            $employee->employee_id = $id;
+            $employee->firstname = $firstname;
+            $employee->lastname = $lastname;
+            $employee->dob = $dob;
+            $employee->gender = $gender;
+            $employee->joining_date = $joiningDate;
+            $employee->is_active = $isActive;
+            $employee->save();
+            echo "<script>alert('Employee Created')</script>";
+            return redirect('/employee')->with('status', 'Employee Created');
+        }
+        catch(Exception $e) {
+            echo "<script>alert('$e')</script>";
+            return redirect('/employee/create')->with('status', 'Create Failed');
 
-
-
-    // public function index(Request $request) {
-    //     $columns = array (
-    //         // datatable column index => database column name
-    //         0 =>'employee_id',
-    //         1 =>'firstname',
-    //         2 =>'lastname',
-    //         3 =>'dob',
-    //         4 =>'gender',
-    //         5 =>'joining_date'
-    //     );
-    // //Getting the data
-    // $employees = DB::table( 'employees' );
-    // $totalData = $employees->count ();            //Total record
-    // $totalFiltered = $totalData;      // No filter at first so we can assign like this
-    // // Here are the parameters sent from client for paging 
-    // $start = $request->input ( 'start' );           // Skip first start records
-    // $length = $request->input ( 'length' );   //  Get length record from start
-    // /*
-    //  * Where Clause
-    //  */
-    // if ($request->has ( 'search' )) {
-    //     if ($request->input ( 'search.value' ) != '') {
-    //         $searchTerm = $request->input ( 'search.value' );
-    //         /*
-    //         * Seach clause : we only allow to search on user_name field
-    //         */
-    //         $employees->where ( 'firstname', 'Like', '%' . $searchTerm . '%' );
-    //     }
-    // }
-    
-    // /*
-    //  * Order By
-    //  */
-    // // if ($request->has ( 'order' )) {
-    // //     if ($request->input ( 'order.0.column' ) != '') {
-    // //         $orderColumn = $request->input ( 'order.0.column' );
-    // //         $orderDirection = $request->input ( 'order.0.dir' );
-    // //         $jobs->orderBy ( $columns [intval ( $orderColumn )], $orderDirection );
-    // //     }
-    // // }
-    // // Get the real count after being filtered by Where Clause
-    // // $totalFiltered = $users->count ();
-    // // // Data to client
-    // // $jobs = $users->skip ( $start )->take ( $length );
-
-    // /*
-    //  * Execute the query
-    //  */
-    // $employees = $employees->get ();
-    // /*
-    // * We built the structure required by BootStrap datatables
-    // */
-    // $data = array ();
-    // foreach ( $employees as $employee ) {
-    //     $nestedData = array ();
-    //     $nestedData ['employee_id'] = $employee->employee_id;
-    //     $nestedData ['firstname'] = $employee->firstname;
-    //     $nestedData ['lastname'] = $employee->lastname;
-    //     $nestedData ['dob'] = $employee->dob;
-    //     $nestedData ['gender'] = $employee->gender;
-    //     $nestedData ['joining_date'] = $employee->joining_date;
-    //     $data [] = $nestedData;
-    // }
-    // /*
-    // * This below structure is required by Datatables
-    // */ 
-    // $content = array (
-    //         "draw" => intval ( $request->input ( 'draw' ) ), // for every request/draw by clientside , they send a number as a parameter, when they recieve a response/data they first check the draw number, so we are sending same number in draw.
-    //         "recordsTotal" => intval ( $totalData ), // total number of records
-    //         "recordsFiltered" => intval ( $totalFiltered ), // total number of records after searching, if there is no searching then totalFiltered = totalData
-    //         "data" => $data
-    // );
-    // $content = json_encode($content);
-    // // var_dump($content);
-    // return view('employee/index', compact('content'));
-    // }
-    //
+        }
+    }
 }
