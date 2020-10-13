@@ -10,7 +10,7 @@ use DataTables;
 class EmployeeController extends Controller
 {
     public function getEmployeeDT() {
-        return  DataTables::of(Employee::all())->make(true);
+        return DataTables::of(Employee::all())->make(true);
     }
     
     public function index() {
