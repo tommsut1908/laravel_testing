@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\FacebookLoginController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Models\Employee;
@@ -54,3 +55,6 @@ Route::get('/employee/create', function () {
     return view('employee/create');
 })->name('employee/create')->middleware('auth');
 Route::post('/employee/create', [EmployeeController::class, 'createEmployee'])->middleware('auth');
+
+Route::get('/facebook', [FacebookLoginController::class, 'redirect']);
+Route::get('/callback', [FacebookLoginController::class, 'callback']);
